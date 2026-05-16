@@ -18,16 +18,14 @@ env/
 .ipynb_checkpoints/
 *.ipynb
 
-# Data & output (keep directory structure, ignore contents)
-data/*
-!data/.gitkeep
-output/*
-!output/.gitkeep
-
 # Environment & secrets
 .env
 *.env.*
 secrets/
+
+# Generated artifacts
+data/clinical_trial.db
+output/
 
 # OS
 .DS_Store
