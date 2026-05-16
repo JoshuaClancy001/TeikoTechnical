@@ -3,6 +3,7 @@
 setup:
 	pip install --upgrade pip
 	pip install -r requirements.txt
+	python src/db/schema.py
 
 pipeline:
 	@echo "Pipeline not yet implemented."
