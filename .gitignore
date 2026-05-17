@@ -24,7 +24,7 @@ env/
 secrets/
 
 # Generated artifacts
-data/clinical_trial.db
+clinical_trial.db
 output/
 
 # OS

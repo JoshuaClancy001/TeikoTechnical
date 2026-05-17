@@ -1,11 +1,11 @@
 import argparse
 import os
 
-from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
+from sqlalchemy import Column, ForeignKey, Integer, String, UniqueConstraint, create_engine
 from sqlalchemy.orm import DeclarativeBase
 
 _ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-DB_PATH = os.environ.get("DB_PATH", os.path.join(_ROOT, "data", "clinical_trial.db"))
+DB_PATH = os.environ.get("DB_PATH", os.path.join(_ROOT, "clinical_trial.db"))
 DB_URL = f"sqlite:///{DB_PATH}"
 
 
@@ -46,6 +46,8 @@ class CellCount(Base):
     sample_id = Column(String(50), ForeignKey("samples.sample_id"), nullable=False)
     population = Column(String(100), nullable=False)
     count = Column(Integer, nullable=False)
+
+    __table_args__ = (UniqueConstraint("sample_id", "population", name="uq_sample_population"),)
 
 
 def create_schema(db_url: str = DB_URL, *, drop_existing: bool = False) -> None:

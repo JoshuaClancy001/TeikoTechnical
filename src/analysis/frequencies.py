@@ -24,7 +24,7 @@ OUTPUT_PATH = "output/frequencies.csv"
 
 def save(df: pd.DataFrame, path: str = OUTPUT_PATH) -> None:
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    df.to_csv(path, index=False)
+    df.rename(columns={"sample_id": "sample", "pct": "percentage"}).to_csv(path, index=False)
     print(f"Saved {len(df)} rows to {path}")
 
 

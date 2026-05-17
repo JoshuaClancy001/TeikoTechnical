@@ -5,8 +5,7 @@ setup:
 	pip install -r requirements.txt
 
 pipeline:
-	python src/db/schema.py
-	python src/db/load.py
+	python load_data.py
 	python src/analysis/frequencies.py
 	python src/analysis/plots.py
 	python src/analysis/stats.py
