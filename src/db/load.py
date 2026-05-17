@@ -1,11 +1,16 @@
 import os
+import sys
 
 import pandas as pd
 from sqlalchemy import create_engine
 
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_ROOT = os.path.dirname(os.path.dirname(_HERE))
+sys.path.insert(0, _HERE)
+
 from schema import DB_URL
 
-CSV_PATH = os.environ.get("CSV_PATH", "data/cell-count.csv")
+CSV_PATH = os.environ.get("CSV_PATH", os.path.join(_ROOT, "data", "cell-count.csv"))
 
 SUBJECT_COLS = ["subject", "project", "condition", "age", "sex", "treatment", "response"]
 SAMPLE_COLS = ["sample", "subject", "sample_type", "time_from_treatment_start"]

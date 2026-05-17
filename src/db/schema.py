@@ -4,7 +4,8 @@ import os
 from sqlalchemy import Column, ForeignKey, Integer, String, create_engine
 from sqlalchemy.orm import DeclarativeBase
 
-DB_PATH = os.environ.get("DB_PATH", "data/clinical_trial.db")
+_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+DB_PATH = os.environ.get("DB_PATH", os.path.join(_ROOT, "data", "clinical_trial.db"))
 DB_URL = f"sqlite:///{DB_PATH}"
 
 
