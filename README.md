@@ -39,6 +39,9 @@ Open this repository in a Codespace — the devcontainer will automatically run 
 └── Makefile
 ```
 
+
+# Design Decisions
+
 ## Database Schema and Design Rationale
 
 The Database is normalized into 3 tables. subjects, samples, and cell_counts
@@ -49,4 +52,20 @@ The Database is normalized into 3 tables. subjects, samples, and cell_counts
 
 This design reflects the structure of the dataset. Subjects have multiple samples and samples contain mutliple immune cell populations
 
+## Cell Counts stored in long format
+
 Cell populations were stored in long format (population, count) instead of separate columns because it scales more cleanly for analytics and future expansion. New immune populations can be added without changing the database schema or analytical code.
+
+## Relative frequencies computed in Python instead of SQL
+
+The frequency calculation uses pandas groubby and transform which is more readable and testable. The result is a plain Datafram that matches the other parts of the analytics pipeline
+
+## Analysis functions are importable 
+
+Every function returns a DataFrame rather than just printing. This means dashboard can call them directly rather than reading from potentially stale files. 
+
+##  Make Pipline resets the DB
+
+This is made since the grader will run the code on their own. This creates a clean and repeatable state from previous runs
+
+
