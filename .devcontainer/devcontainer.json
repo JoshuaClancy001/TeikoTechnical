@@ -1,7 +1,6 @@
 {
   "name": "Clinical Trial Analytics",
   "image": "mcr.microsoft.com/devcontainers/python:3.11",
-  "postCreateCommand": "make setup",
   "customizations": {
     "vscode": {
       "extensions": [
