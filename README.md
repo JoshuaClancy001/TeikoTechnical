@@ -27,17 +27,47 @@ Installs all Python dependencies from `requirements.txt`.
 
 Open this repository in a Codespace — the devcontainer will automatically run `make setup` on creation.
 
+## Dashboard
+
+After running `make pipeline`, launch the dashboard with `make dashboard` and open:
+
+```
+http://localhost:8501
+```
+
 ## Project Structure
 
 ```
 .
-├── .devcontainer/      # Codespaces configuration
-├── data/               # Raw and processed data (gitignored)
-├── output/             # Pipeline outputs (gitignored)
-├── src/                # Source code
+├── .devcontainer/          # Codespaces configuration
+├── data/                   # Input data (cell-count.csv)
+├── output/                 # Generated plots and tables
+├── src/
+│   ├── db/
+│   │   ├── schema.py       # SQLAlchemy table definitions, schema creation
+│   │   └── load.py         # CSV parsing, normalization, DB insertion
+│   ├── analysis/
+│   │   ├── frequencies.py  # Relative frequency computation (Part 2)
+│   │   ├── dataset.py      # Filtered analysis dataset + responder split (Part 3)
+│   │   ├── plots.py        # Boxplot generation (Part 3)
+│   │   ├── stats.py        # Mann-Whitney U testing (Part 3)
+│   │   └── subset_analysis.py # Baseline subset queries (Part 4)
+│   └── dashboard/
+│       └── app.py          # Streamlit dashboard
+├── load_data.py            # Entry point: initializes DB and loads CSV
 ├── requirements.txt
 └── Makefile
 ```
+
+## Code Structure
+
+The project is split into three layers:
+
+**`src/db/`** handles all data ingestion. `schema.py` defines the three-table SQLite schema using SQLAlchemy. `load.py` reads the flat CSV, splits it into normalized tables, and inserts it using `INSERT OR IGNORE`. `load_data.py` in the root is the single entry point that calls both — it satisfies the spec requirement and keeps the grader's workflow simple.
+
+**`src/analysis/`** contains one file per analytical concern. Each file exposes importable functions that return DataFrames, so both the pipeline and the dashboard can call them directly without reading from intermediate files. The pipeline runs them sequentially via `make pipeline`; the dashboard caches their output with `@st.cache_data`.
+
+**`src/dashboard/`** is purely presentational. It imports from `src/analysis/` and renders results using Streamlit — no analytical logic lives here.
 
 
 # Design Decisions
