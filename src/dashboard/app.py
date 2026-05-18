@@ -105,14 +105,9 @@ else:
 
 st.subheader("Mann–Whitney U Results")
 stats = get_responder_stats()
-st.dataframe(
-    stats.style.map(
-        lambda v: "background-color: #d4edda" if v is True else "",
-        subset=["significant"],
-    ),
-    use_container_width=True,
-    hide_index=True,
-)
+display = stats.copy()
+display["significant"] = display["significant"].map({True: "Yes", False: "No"})
+st.dataframe(display, use_container_width=True, hide_index=True)
 
 st.divider()
 

@@ -72,16 +72,14 @@ def avg_bcell_count(engine) -> float:
         FROM subjects su
         JOIN samples sa  ON su.subject_id = sa.subject_id
         JOIN cell_counts cc ON sa.sample_id = cc.sample_id
-        WHERE su.condition                  = :condition
-          AND su.treatment                  = :treatment
-          AND sa.sample_type                = :sample_type
-          AND sa.time_from_treatment_start  = :time_from_treatment_start
-          AND su.sex                        = 'M'
-          AND su.response                   = 'yes'
-          AND cc.population                 = 'b_cell'
+        WHERE su.condition                 = 'melanoma'
+          AND su.sex                       = 'M'
+          AND su.response                  = 'yes'
+          AND sa.time_from_treatment_start = 0
+          AND cc.population                = 'b_cell'
     """)
     with engine.connect() as conn:
-        result = conn.execute(query, BASELINE_FILTER).scalar()
+        result = conn.execute(query).scalar()
     return result
 
 
